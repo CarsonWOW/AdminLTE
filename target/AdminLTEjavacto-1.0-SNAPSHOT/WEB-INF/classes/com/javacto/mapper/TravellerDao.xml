@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.javacto.mapper.TravellerDao">
+  <resultMap id="BaseResultMap" type="com.javacto.po.Traveller">
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="NAME" jdbcType="VARCHAR" property="name" />
+    <result column="sex" jdbcType="VARCHAR" property="sex" />
+    <result column="phoneNum" jdbcType="VARCHAR" property="phonenum" />
+    <result column="credentialsType" jdbcType="INTEGER" property="credentialstype" />
+    <result column="credentialsNum" jdbcType="VARCHAR" property="credentialsnum" />
+    <result column="travellerType" jdbcType="INTEGER" property="travellertype" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, `NAME`, sex, phoneNum, credentialsType, credentialsNum, travellerType
+  </sql>
+  <select id="selectByExample" parameterType="com.javacto.po.TravellerExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from traveller
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+    <if test="limit != null">
+      <if test="offset != null">
+        limit ${offset}, ${limit}
+      </if>
+      <if test="offset == null">
+        limit ${limit}
+      </if>
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from traveller
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from traveller
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.javacto.po.TravellerExample">
+    delete from traveller
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.javacto.po.Traveller" useGeneratedKeys="true">
+    insert into traveller (`NAME`, sex, phoneNum, 
+      credentialsType, credentialsNum, travellerType
+      )
+    values (#{name,jdbcType=VARCHAR}, #{sex,jdbcType=VARCHAR}, #{phonenum,jdbcType=VARCHAR}, 
+      #{credentialstype,jdbcType=INTEGER}, #{credentialsnum,jdbcType=VARCHAR}, #{travellertype,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.javacto.po.Traveller" useGeneratedKeys="true">
+    insert into traveller
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="name != null">
+        `NAME`,
+      </if>
+      <if test="sex != null">
+        sex,
+      </if>
+      <if test="phonenum != null">
+        phoneNum,
+      </if>
+      <if test="credentialstype != null">
+        credentialsType,
+      </if>
+      <if test="credentialsnum != null">
+        credentialsNum,
+      </if>
+      <if test="travellertype != null">
+        travellerType,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="sex != null">
+        #{sex,jdbcType=VARCHAR},
+      </if>
+      <if test="phonenum != null">
+        #{phonenum,jdbcType=VARCHAR},
+      </if>
+      <if test="credentialstype != null">
+        #{credentialstype,jdbcType=INTEGER},
+      </if>
+      <if test="credentialsnum != null">
+        #{credentialsnum,jdbcType=VARCHAR},
+      </if>
+      <if test="travellertype != null">
+        #{travellertype,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.javacto.po.TravellerExample" resultType="java.lang.Long">
+    select count(*) from traveller
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update traveller
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=VARCHAR},
+      </if>
+      <if test="record.name != null">
+        `NAME` = #{record.name,jdbcType=VARCHAR},
+      </if>
+      <if test="record.sex != null">
+        sex = #{record.sex,jdbcType=VARCHAR},
+      </if>
+      <if test="record.phonenum != null">
+        phoneNum = #{record.phonenum,jdbcType=VARCHAR},
+      </if>
+      <if test="record.credentialstype != null">
+        credentialsType = #{record.credentialstype,jdbcType=INTEGER},
+      </if>
+      <if test="record.credentialsnum != null">
+        credentialsNum = #{record.credentialsnum,jdbcType=VARCHAR},
+      </if>
+      <if test="record.travellertype != null">
+        travellerType = #{record.travellertype,jdbcType=INTEGER},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update traveller
+    set id = #{record.id,jdbcType=VARCHAR},
+      `NAME` = #{record.name,jdbcType=VARCHAR},
+      sex = #{record.sex,jdbcType=VARCHAR},
+      phoneNum = #{record.phonenum,jdbcType=VARCHAR},
+      credentialsType = #{record.credentialstype,jdbcType=INTEGER},
+      credentialsNum = #{record.credentialsnum,jdbcType=VARCHAR},
+      travellerType = #{record.travellertype,jdbcType=INTEGER}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.javacto.po.Traveller">
+    update traveller
+    <set>
+      <if test="name != null">
+        `NAME` = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="sex != null">
+        sex = #{sex,jdbcType=VARCHAR},
+      </if>
+      <if test="phonenum != null">
+        phoneNum = #{phonenum,jdbcType=VARCHAR},
+      </if>
+      <if test="credentialstype != null">
+        credentialsType = #{credentialstype,jdbcType=INTEGER},
+      </if>
+      <if test="credentialsnum != null">
+        credentialsNum = #{credentialsnum,jdbcType=VARCHAR},
+      </if>
+      <if test="travellertype != null">
+        travellerType = #{travellertype,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.javacto.po.Traveller">
+    update traveller
+    set `NAME` = #{name,jdbcType=VARCHAR},
+      sex = #{sex,jdbcType=VARCHAR},
+      phoneNum = #{phonenum,jdbcType=VARCHAR},
+      credentialsType = #{credentialstype,jdbcType=INTEGER},
+      credentialsNum = #{credentialsnum,jdbcType=VARCHAR},
+      travellerType = #{travellertype,jdbcType=INTEGER}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>
